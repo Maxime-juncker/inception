@@ -3,6 +3,7 @@ services:
     build: ./requirements/nginx/
     ports:
       - "80:80" # http port
+      - "443:443" # http port
     networks:
       - inception
 
