@@ -1,0 +1,11 @@
+services:
+  nginx:
+    build: ./requirements/nginx/
+    ports:
+      - "80:80" # http port
+    networks:
+      - inception
+
+networks:
+  inception:
+    driver: bridge
