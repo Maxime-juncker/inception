@@ -11,24 +11,24 @@ services:
     depends_on:
       - wordpress
 
-  mariadb:
-    image: mariadb
-    environment:
-      MARIADB_USER: mysql
-      MARIADB_PASSWORD: passw
-      MARIADB_ROOT_PASSWORD: passw
-    ports:
-      - "3306:3306"
-    volumes:
-      - mariadb:/var/lib/mysql
-    networks:
-      - inception
+  # mariadb:
+  #   image: mariadb
+  #   environment:
+  #     MARIADB_USER: mysql
+  #     MARIADB_PASSWORD: passw
+  #     MARIADB_ROOT_PASSWORD: passw
+  #   ports:
+  #     - "3306:3306"
+  #   volumes:
+  #     - mariadb:/var/lib/mysql
+  #   networks:
+  #     - inception
 
   wordpress:
-      image: wordpress:latest
+      build: ./requirements/wordpress/
       container_name: wordpress
-      depends_on:
-        - mariadb
+      # depends_on:
+      #   - mariadb
       ports:
         - "8080:80"
         - "9000:9000"

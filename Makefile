@@ -30,7 +30,7 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	docker volume prune -f
+	docker volume prune -a -f
 
 .PHONY: re
 re:
