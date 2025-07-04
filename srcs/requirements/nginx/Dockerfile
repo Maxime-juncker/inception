@@ -7,7 +7,8 @@ EXPOSE 80 443
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY ./setup.sh /setup.sh
+RUN chmod +x /setup.sh
 
-RUN bash /setup.sh
+ENTRYPOINT ["/setup.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]
