@@ -1,6 +1,6 @@
 FROM alpine:3.20
 
-RUN apk add mariadb mariadb-client mariadb-server-utils bash
+RUN apk add mariadb mariadb-client mariadb-server-utils bash openrc
 
 RUN adduser -S test
 

@@ -12,52 +12,29 @@ services:
     depends_on:
       - wordpress
 
-  # mariadb:
-  #   image: mariadb
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: password
-  #     MYSQL_USER: test
-  #     MYSQL_PASSWORD: test
-  #     MYSQL_DATABASE: wordpress
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - mariadb:/var/lib/mysql # TODO: path is wrong check subject
-  #   networks:
-  #     - inception
-
   mariadb:
     build: ./requirements/mariadb/
     container_name: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_USER: test
-      MYSQL_PASSWORD: test
-      MYSQL_DATABASE: wordpress
+    env_file: ./.env
     ports:
       - "3306:3306"
     volumes:
-      - mariadb:/var/lib/mysql # TODO: path is wrong check subject
+      - mariadb:/var/lib/mysql
     networks:
       - inception
 
   wordpress:
       build: ./requirements/wordpress/
       container_name: wordpress
-      depends_on:
-        - mariadb
+      env_file: ./.env
       ports:
         - "9000:9000"
-      environment:
-        WORDPRESS_DB_HOST: mariadb:3306
-        WORDPRESS_DB_NAME: mysql
-        WORDPRESS_DB_USER: root
-        WORDPRESS_DB_PASSWORD: passw
       volumes:
         - wordpress:/var/www/html
-        - logs:/var/wp-logs
       networks:
         - inception
+      depends_on:
+        - mariadb
 
 networks:
   inception:
@@ -66,4 +43,3 @@ networks:
 volumes:
   mariadb:
   wordpress:
-  logs:

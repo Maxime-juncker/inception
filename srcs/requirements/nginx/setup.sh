@@ -3,7 +3,7 @@
 CERT_DIR="/etc/nginx/ssl"
 KEY_FILE="$CERT_DIR/nginx.key"
 CERT_FILE="$CERT_DIR/nginx.crt"
-SUBJ="/C=FR/ST=ge/L=CHARBONIERE/O=ME/CN=test.com"
+SUBJ="/C=FR/ST=ge/L=CHARBONIERE/O=ME/CN=mjuncker.42.fr"
 
 mkdir "$CERT_DIR"
 

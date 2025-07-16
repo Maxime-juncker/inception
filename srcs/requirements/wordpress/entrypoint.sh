@@ -1,9 +1,11 @@
 #!/bin/bash
 
-mkdir -p /etc/php83/php-fpm.d/
-mkdir -p /var/www/html/
+DIR=/var/www/html/
 
-if [ "$(ls -A /var/www/html/)" ]; then
+mkdir -p /etc/php83/php-fpm.d/
+mkdir -p $DIR
+
+if [ "$(ls -A $DIR)" ]; then
 	echo wordpress is already installed
 	exec php-fpm83 --nodaemonize
 fi
@@ -18,16 +20,26 @@ mv wp-cli.phar /usr/local/bin/wp
 
 # download wordpress
 # <!> by default php doen'st have enought mem <!>
-php -d memory_limit=256M /usr/local/bin/wp core download --path=/var/www/html/
+php -d memory_limit=256M /usr/local/bin/wp core download --path=$DIR
 
-sleep 5 # waiting for server to start
+sleep 4 # waiting for server to start
 
 # TODO: use env variables
-wp config create --dbname="wordpress" --dbuser="mysql" --dbpass="password" --dbhost="mariadb" --path="/var/www/html/"
-# wp core install --url="https://localhost" --title="super titre" --admin_user="mjuncker" --admin_password="mjuncker" --admin_email="mjuncker@42lyon.fr" --skip-email --allow-root --path="/var/www/html/"
+wp config create	--dbname=$WP_DBNAME \
+					--dbuser=$MYSQL_USER \
+					--dbpass=$MYSQL_PASSW \
+					--dbhost=$WP_DBHOST \
+					--path=$DIR
+
+wp core install	--url="https://localhost" \
+				--title="$WP_TITLE" \
+				--admin_user=$WP_ADMIN_LOGIN \
+				--admin_password=$WP_ADMIN_PASSW \
+				--admin_email=$WP_ADMIN_EMAIL \
+				--path=$DIR
 
 #? allow to use ssh port forwaring
-sed -i "40i\\define('WP_SITEURL', 'https://' . \$_SERVER['HTTP_HOST']);" /var/www/html/wp-config.php
-sed -i "40i\\define('WP_HOME', 'https://' . \$_SERVER['HTTP_HOST']);" /var/www/html/wp-config.php
+sed -i "40i\\define('WP_SITEURL', 'https://' . \$_SERVER['HTTP_HOST']);" $DIR/wp-config.php
+sed -i "40i\\define('WP_HOME', 'https://' . \$_SERVER['HTTP_HOST']);" $DIR/wp-config.php
 
 exec php-fpm83 --nodaemonize

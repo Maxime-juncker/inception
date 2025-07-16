@@ -1,29 +1,31 @@
 #!/bin/bash
 
-mkdir -p /var/lib/mysql /run/mysqld
-chown -R mysql:mysql /var/lib/mysql /run/mysqld
+DIR=/var/lib/mysql
 
-if [ "$(ls -A /var/lib/mysql)" ]; then
+# touch /run/openrc/softlevel
+
+mkdir -p $DIR /run/mysqld
+chown -R mysql:mysql $DIR /run/mysqld
+
+if [ "$(ls -A $DIR)" ]; then
 	echo mariadb is already installed!
-	mysqld --user=mysql --datadir=/var/lib/mysql --socket=/run/mysqld/mysqld.sock &
-	tail -f /dev/null #! to remove
+	exec mysqld --user=$MYSQL_USER --datadir=$DIR --socket=/run/mysqld/mysqld.sock
 fi
 
-mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-
-mysqld --user=mysql --datadir=/var/lib/mysql --socket=/run/mysqld/mysqld.sock &
+mariadb-install-db --user=$MYSQL_USER --basedir=/usr --datadir=$DIR
+mysqld --user=$MYSQL_USER --datadir=$DIR --socket=/run/mysqld/mysqld.sock &
 
 # Wait for the server to start
-sleep 4
+sleep 2
 
 mariadb -u root <<EOF
 CREATE DATABASE IF NOT EXISTS wordpress;
-CREATE USER 'mysql'@'%' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON wordpress.* TO 'mysql'@'%' IDENTIFIED BY 'password';
+CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSW';
+GRANT ALL PRIVILEGES ON wordpress.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSW';
 FLUSH PRIVILEGES;
 EOF
+echo "user: $MYSQL_USER has been created!"
 
-echo "user has been created!"
-
-# Keep container running
-tail -f /dev/null #! to remove
+# reboot mariadb
+mysqladmin -u root shutdown
+exec mysqld --user=$MYSQL_USER --console

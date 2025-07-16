@@ -11,5 +11,3 @@ COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 CMD ["bash", "/entrypoint.sh"]
-
-# CMD ["php-fpm83", "--nodaemonize"]
