@@ -1,5 +1,6 @@
 services:
   nginx:
+    restart: always
     build: ./requirements/nginx/
     container_name: nginx
     ports:
@@ -13,6 +14,7 @@ services:
       - wordpress
 
   mariadb:
+    restart: always
     build: ./requirements/mariadb/
     container_name: mariadb
     env_file: ./.env
@@ -24,6 +26,7 @@ services:
       - inception
 
   wordpress:
+      restart: always
       build: ./requirements/wordpress/
       container_name: wordpress
       env_file: ./.env
@@ -42,4 +45,6 @@ networks:
 
 volumes:
   mariadb:
+    name: mariadb
   wordpress:
+    name: wordpress

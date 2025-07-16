@@ -38,6 +38,9 @@ wp core install	--url="https://localhost" \
 				--admin_email=$WP_ADMIN_EMAIL \
 				--path=$DIR
 
+wp user create wil wil@example.com --role=author --user_pass="wil_pass" --path=$DIR
+
+
 #? allow to use ssh port forwaring
 sed -i "40i\\define('WP_SITEURL', 'https://' . \$_SERVER['HTTP_HOST']);" $DIR/wp-config.php
 sed -i "40i\\define('WP_HOME', 'https://' . \$_SERVER['HTTP_HOST']);" $DIR/wp-config.php
