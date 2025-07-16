@@ -3,12 +3,13 @@
 mkdir -p /var/lib/mysql /run/mysqld
 chown -R mysql:mysql /var/lib/mysql /run/mysqld
 
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-	echo mariadb is not installed!
-	mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-else
+if [ "$(ls -A /var/lib/mysql)" ]; then
 	echo mariadb is already installed!
+	mysqld --user=mysql --datadir=/var/lib/mysql --socket=/run/mysqld/mysqld.sock &
+	tail -f /dev/null #! to remove
 fi
+
+mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
 
 mysqld --user=mysql --datadir=/var/lib/mysql --socket=/run/mysqld/mysqld.sock &
 
