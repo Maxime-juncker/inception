@@ -1,7 +1,7 @@
 FROM alpine:3.20
 
 RUN apk update && apk upgrade
-RUN apk add bash php php83-fpm php83-iconv php83-phar php83-mysqli curl
+RUN apk add bash php php83-fpm php83-iconv php83-phar php83-mysqli php83-redis curl
 
 COPY ./www.conf /www.conf
 

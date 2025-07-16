@@ -39,6 +39,9 @@ wp core install	--url="https://localhost" \
 				--path=$DIR
 
 wp user create wil wil@example.com --role=author --user_pass="wil_pass" --path=$DIR
+echo user: wil has been added
+
+wp plugin install redis-cache --activate --path=$DIR
 
 
 #? allow to use ssh port forwaring
