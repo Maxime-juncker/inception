@@ -4,7 +4,7 @@ RUN apk update && apk upgrade
 RUN apk add php php-fpm php-mysqli php-cgi php-opcache php-session php-dom php-curl
 RUN apk add nginx && apk add bash && apk add openssl
 
-EXPOSE 80 443
+EXPOSE 443
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY ./setup.sh /setup.sh

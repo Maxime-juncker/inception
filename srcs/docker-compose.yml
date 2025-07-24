@@ -1,4 +1,5 @@
 services:
+
   nginx:
     restart: always
     build: ./requirements/nginx/
@@ -6,6 +7,7 @@ services:
     ports:
       - "443:443" # http port
     volumes:
+      - nextcloud:/var/www/nextcloud
       - wordpress:/var/www/html
     networks:
       - inception
@@ -32,6 +34,7 @@ services:
       ports:
         - "9000:9000"
       volumes:
+        - nextcloud:/var/www/nextcloud
         - wordpress:/var/www/html
       networks:
         - inception
@@ -47,21 +50,25 @@ services:
     networks:
       - inception
 
-  jellyfin:
-    image: jellyfin/jellyfin
-    container_name: jellyfin
-    user: uid:gid
-    network_mode: 'host'
+  nextcloud:
+    restart: always
+    build: ./requirements/nextcloud/
+    container_name: nextcloud
+    ports:
+      - "8080:8080"
     volumes:
-      - /path/to/config:/config
-      - /path/to/cache:/cache
-    restart: 'unless-stopped'
-    # Optional - alternative address used for autodiscovery
-    environment:
-      - JELLYFIN_PublishedServerUrl=http://localhost
-    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - nextcloud:/var/www/nextcloud
+    networks:
+      - inception
+
+  vsftpd:
+    restart: always
+    build: ./requirements/vsftpd/
+    container_name: vsftpd
+    ports:
+      - "201:201"
+    networks:
+      - inception
 
 networks:
   inception:
@@ -72,3 +79,5 @@ volumes:
     name: mariadb
   wordpress:
     name: wordpress
+  nextcloud:
+    name: nextcloud

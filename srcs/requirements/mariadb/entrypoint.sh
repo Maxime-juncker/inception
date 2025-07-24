@@ -26,6 +26,13 @@ FLUSH PRIVILEGES;
 EOF
 echo "user: $MYSQL_USER has been created!"
 
+mariadb -u root <<EOF
+CREATE DATABASE nextcloud;
+CREATE USER nextclouduser@localhost IDENTIFIED BY 'StrongPassword';
+GRANT ALL PRIVILEGES ON nextcloud.* TO nextclouduser@localhost;
+FLUSH PRIVILEGES;
+EOF
+
 # reboot mariadb
 mysqladmin -u root shutdown
 exec mysqld --user=$MYSQL_USER --console
