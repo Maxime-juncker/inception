@@ -28,8 +28,7 @@ echo "user: $MYSQL_USER has been created!"
 
 mariadb -u root <<EOF
 CREATE DATABASE nextcloud;
-CREATE USER nextclouduser@localhost IDENTIFIED BY 'StrongPassword';
-GRANT ALL PRIVILEGES ON nextcloud.* TO nextclouduser@localhost;
+GRANT ALL PRIVILEGES ON nextcloud.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 

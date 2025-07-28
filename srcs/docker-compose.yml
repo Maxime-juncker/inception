@@ -5,7 +5,8 @@ services:
     build: ./requirements/nginx/
     container_name: nginx
     ports:
-      - "443:443" # http port
+      - "443:443"
+      - "80:80"
     volumes:
       - nextcloud:/var/www/nextcloud
       - wordpress:/var/www/html
@@ -56,6 +57,7 @@ services:
     container_name: nextcloud
     ports:
       - "8080:8080"
+      - "4242:4242"
     volumes:
       - nextcloud:/var/www/nextcloud
     networks:
