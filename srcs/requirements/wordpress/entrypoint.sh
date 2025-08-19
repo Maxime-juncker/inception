@@ -52,7 +52,7 @@ echo setting constant for redis-cache
 
 wp config set WP_REDIS_HOST "redis" --path=$DIR
 wp config set WP_REDIS_PORT "6379" --path=$DIR
-wp config set WP_REDIS_PORT "6379" --path=$DIR
+wp config set WP_REDIS_DATABASE "15" --path=$DIR
 wp redis enable --path=$DIR
 
 #? allow to use ssh port forwaring
