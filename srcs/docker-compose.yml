@@ -6,7 +6,6 @@ services:
     container_name: nginx
     ports:
       - "443:443"
-      - "80:80"
     volumes:
       - nextcloud:/var/www/nextcloud
       - wordpress:/var/www/html
@@ -14,6 +13,7 @@ services:
       - inception
     depends_on:
       - wordpress
+      - nextcloud
 
   mariadb:
     restart: always
@@ -42,15 +42,6 @@ services:
       depends_on:
         - mariadb
 
-  # redis:
-  #   restart: always
-  #   build: ./requirements/redis/
-  #   container_name: redis
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - inception
-
   nextcloud:
     restart: always
     build: ./requirements/nextcloud/
@@ -61,6 +52,18 @@ services:
       - nextcloud:/var/www/nextcloud
     networks:
       - inception
+    depends_on:
+      - mariadb
+
+  redis:
+    restart: always
+    build: ./requirements/redis/
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - inception
+
 
   # vsftpd:
   #   restart: always

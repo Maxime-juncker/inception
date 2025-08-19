@@ -24,7 +24,6 @@ php -d memory_limit=256M /usr/local/bin/wp core download --path=$DIR
 
 sleep 4 # waiting for server to start
 
-# TODO: use env variables
 wp config create	--dbname=$WP_DBNAME \
 					--dbuser=$MYSQL_USER \
 					--dbpass=$MYSQL_PASSW \
@@ -41,11 +40,24 @@ wp core install	--url="https://localhost" \
 wp user create wil wil@example.com --role=author --user_pass="wil_pass" --path=$DIR
 echo user: wil has been added
 
+wp config set WP_DEBUG true --path=$DIR
+wp config set WP_DEBUG_LOG true --path=$DIR
+wp config set DISALLOW_FILE_MODS true --path=$DIR
+
+
+echo installing redis-cache plugin
 wp plugin install redis-cache --activate --path=$DIR
 
+echo setting constant for redis-cache
+
+wp config set WP_REDIS_HOST "redis" --path=$DIR
+wp config set WP_REDIS_PORT "6379" --path=$DIR
+wp config set WP_REDIS_PORT "6379" --path=$DIR
+wp redis enable --path=$DIR
 
 #? allow to use ssh port forwaring
 sed -i "40i\\define('WP_SITEURL', 'https://' . \$_SERVER['HTTP_HOST']);" $DIR/wp-config.php
 sed -i "40i\\define('WP_HOME', 'https://' . \$_SERVER['HTTP_HOST']);" $DIR/wp-config.php
+
 
 exec php-fpm83 --nodaemonize
