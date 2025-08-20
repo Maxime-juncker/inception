@@ -37,8 +37,8 @@ wp core install	--url="https://localhost" \
 				--admin_email=$WP_ADMIN_EMAIL \
 				--path=$DIR
 
-wp user create wil wil@example.com --role=author --user_pass="wil_pass" --path=$DIR
-echo user: wil has been added
+wp user create $WP_USER $WP_EMAIL --role=author --user_pass=$WP_PASS --path=$DIR
+echo user: $WP_USER has been added
 
 wp config set WP_DEBUG true --path=$DIR
 wp config set WP_DEBUG_LOG true --path=$DIR

@@ -2,8 +2,6 @@
 
 DIR=/var/lib/mysql
 
-# touch /run/openrc/softlevel
-
 mkdir -p $DIR /run/mysqld
 chown -R mysql:mysql $DIR /run/mysqld
 

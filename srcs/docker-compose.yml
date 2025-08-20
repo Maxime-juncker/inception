@@ -9,6 +9,7 @@ services:
     volumes:
       - nextcloud:/var/www/nextcloud
       - wordpress:/var/www/html
+      - showcase:/var/www/showcase
     networks:
       - inception
     depends_on:

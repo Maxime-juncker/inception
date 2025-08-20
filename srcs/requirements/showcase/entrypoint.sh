@@ -1,18 +1,15 @@
 #!/bin/bash
 
-git clone https://github.com/abidolet/Webserv.git /var/www/showcase/webserv
-git clone https://github.com/abidolet/Webserv.git /var/www/showcase/html
+if [ "$(ls -A /var/www/showcase/)" ]; then
+	cd /var/www/showcase && git pull
+	echo repo are updated!
+else
+	git clone -b sample https://github.com/Maxime-juncker/inception.git /var/www/showcase/
+	echo cloning repos
+fi
 
-mkdir /var/www/showcase/html
-cp -r /var/www/showcase/webserv/server /var/www/showcase/html/
-
-cd /var/www/showcase/webserv
-make
-
-
-# get new cat
-URL=$(curl -s "https://api.thecatapi.com/v1/images/search" | jq -r '.[0].url')
-curl $URL --output img.png
-
-./webserv /webserv.conf
+echo launching script
+chmod +x /var/www/showcase/new-cat.py
+cd /var/www/showcase/
+exec python3 ./new-cat.py
 
