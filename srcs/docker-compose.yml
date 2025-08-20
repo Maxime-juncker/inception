@@ -93,8 +93,6 @@ services:
     build: ./requirements/showcase
     container_name: showcase
     restart: always
-    ports:
-      - 8080:8080
     volumes:
       - showcase:/var/www/showcase
     networks:
