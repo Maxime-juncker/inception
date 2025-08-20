@@ -46,6 +46,7 @@ services:
     restart: always
     build: ./requirements/nextcloud/
     container_name: nextcloud
+    env_file: ./.env
     ports:
       - "9001:9001"
     volumes:
@@ -64,31 +65,15 @@ services:
     networks:
       - inception
 
-
-  # vsftpd:
-  #   restart: always
-  #   build: ./requirements/vsftpd/
-  #   container_name: vsftpd
-  #   ports:
-  #     - "201:201"
-  #   networks:
-  #     - inception
-  #
   proftpd:
-    # image: kibatic/proftpd
     build: ./requirements/proftpd/
     container_name: proftpd
-    restart: unless-stopped
-    environment:
-      FTP_LIST: "myusername:mypassword"
-      USERADD_OPTIONS: "-o --gid 33 --uid 33"
-      PASSIVE_MIN_PORT: 50000
-      PASSIVE_MAX_PORT: 50100
+    restart: always 
+    env_file: ./.env
     volumes:
-      - "wordpress:/home/myusername"
+      - "wordpress:/var/www/html"
     ports:
       - 21:21
-      - 50000-50100:50000-50100
     networks:
         - inception
 

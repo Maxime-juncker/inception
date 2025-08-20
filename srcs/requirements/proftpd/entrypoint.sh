@@ -3,11 +3,13 @@
 cp /proftpd.conf /etc/proftpd.conf
 
 mkdir -p /var/run/proftpd
-chown proftpd:proftpd /var/run/proftpd  # or whatever user ProFTPD runs as
+chown proftpd:proftpd /var/run/proftpd
 chmod 755 /var/run/proftpd
+chmod -R 777 /var/www/html
 
- exec proftpd -n
+adduser $FTP_USER -D 
+echo $FTP_USER:$FTP_PASS | chpasswd
 
-echo failed to launch ftp
+echo starting ftpd
+exec proftpd -n
 
-tail -f

@@ -6,12 +6,7 @@ RUN apk add bash php php83-fpm php-xml php-simplexml php83-iconv php83-phar php8
 	php-mysqli php-pdo_mysql php83-pcntl php-ftp
 RUN apk add curl unzip net-tools
 
-RUN if ! getent group www-data >/dev/null 2>&1; then \
-        addgroup -g 33 www-data; \
-    fi && \
-    if ! getent passwd www-data >/dev/null 2>&1; then \
-        adduser -D -u 33 -G www-data www-data; \
-    fi
+RUn adduser -D -u 33 -G www-data www-data
 
 COPY ./www.conf /www.conf
 COPY ./entrypoint.sh /entrypoint.sh
