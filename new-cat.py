@@ -1,6 +1,5 @@
 import requests
 import json
-import urllib.request
 import time
 
 while True:
@@ -10,5 +9,8 @@ while True:
 	data = response.json()
 	print(json.dumps(response.json(), indent=4))
 	print(data)
-	urllib.request.urlretrieve(data[0]["url"], "img.png")
+	url = data[0]["url"]
+	response = requests.get(url)
+	with open('img.png', 'wb') as f:
+		f.write(response.content)
 	time.sleep(2)
