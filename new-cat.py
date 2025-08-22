@@ -14,11 +14,12 @@ signal.signal(signal.SIGTERM, signal_handler)
 
 while running:
 	response = requests.get("https://api.thecatapi.com/v1/images/search")
-	if (response.status_code != 200):
-		raise Exception("request failed")
-	data = response.json()
-	url = data[0]["url"]
-	response = requests.get(url)
-	with open('img.png', 'wb') as f:
-		f.write(response.content)
-	time.sleep(2)
+	if (response.status_code == 200):
+		data = response.json()
+		url = data[0]["url"]
+		response = requests.get(url)
+		with open('img.png', 'wb') as f:
+			f.write(response.content)
+		time.sleep(2)
+	else:
+		print("request failed :(")
